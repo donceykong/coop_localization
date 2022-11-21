@@ -1,0 +1,4 @@
+# Project Gitignore file
+
+# Ignore MacOS DSFiles
+.DS_Store
