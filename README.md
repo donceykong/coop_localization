@@ -6,14 +6,20 @@ This repository contains the matlab scripts used to complete the final project f
 
 Each system was provided with a corresponding nonlinear continuous-time (NLCT) dynamics model. The UGV dynamics model was given the following form:
 
-# Include image of UGV model
+{::comment}
+comment text
+  Include image of UGV model
+{:/comment}
 
 The UAV dynamics model has the following form:
 
-# Include image of UAV model
+{::comment}
+  Include image of UAV model
+{:/comment}
 
 As a system corresponding to both models, the following model can be made:
 
-# Include image of coupled dynamics model
-
+{::comment}
+  Include image of coupled dynamics model
+{:/comment}
 
