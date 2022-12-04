@@ -1,7 +1,7 @@
 # Project Gitignore file
 
 # Ignore MacOS DSFiles
-.DS_Store
+*.DS_Store
 
 # Ignore MATLAB Autosave Files
-.asv
+*.asv
