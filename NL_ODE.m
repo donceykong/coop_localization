@@ -8,5 +8,4 @@ dxdt(3) = (u(1)/L)*tan(u(2));
 dxdt(4) = u(3)*cos(x(6));
 dxdt(5) = u(3)*sin(x(6));
 dxdt(6) = u(4);
-
 end
