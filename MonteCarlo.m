@@ -1,14 +1,16 @@
-function [x_true_capt,y_true_capt] = MonteCarlo(mu,P0,perturb_x0,T,u,L,w,v)
+function [x_true_capt,y_true_capt] = MonteCarlo(mu,P0,Q,R,perturb_x0,T,u,L)
 %MONTECARLO Summary of this function goes here
 %   Detailed explanation goes here
 for k = 1:30
     xinit = transpose(mvnrnd(mu,P0)) ;
+    qw = randn(6,1001) ;
+    qv = randn(5,1001) ;
+    w = chol(Q,'lower')*qw ;
+    v = chol(R,'lower')*qv ;
     [~, x_true_m] = ode45(@(t,x) NL_ODE(t, x, u, L,w), T, xinit+perturb_x0) ;
     [y_true_m] = Nonlin_Meas(x_true_m',v) ;
     x_true_capt{k} = x_true_m' ;
     y_true_capt{k} = y_true_m ;
-
 end
-% x_sim1 = xcapt{1} ;
 end
 
