@@ -1,24 +1,24 @@
 run Nonlin_Simulation.m
-% Nonlinear Sim w/o perturbations
-[t, x_base] = ode45(@(t,x) NL_ODE(t, x, u, L, w), T, x_0) ;
-x_sim = x_base' ;   %x_sim = NO NOISE
-[y_sim] = Nonlin_Meas(x_sim,v) ;
+% Nonlinear nom w/o perturbations
+[t, x_base] = ode45(@(t,x) NL_ODE(t, x, u, L, w*0), T, x_0) ;
+x_nom = x_base' ;   %x_nom = NO NOISE
+[y_nom] = Nonlin_Meas(x_nom,v*0) ;
 
-%Linearized Dynamics Simulation
+%Linearized Dynamics nomulation
 xd = perturb_x0 ;
-xf = x_sim(:,1)+perturb_x0 ;
-[Ft,Gt,Ht,Omega] = Jacobians(x_sim(:,1),val) ;
+xf = x_nom(:,1)+perturb_x0 ;
+[Ft,Gt,Ht,Omega] = Jacobians(x_nom(:,1),val) ;
 
 for t = 1:1000
     xd(:,t+1) = Ft*xd(:,t) ;
-    [Ft,Gt,Ht,Omega] = Jacobians(x_sim(:,t),val) ;
-    xf(:,t+1) = xd(:,t+1)+x_sim(:,t+1) ;
+    [Ft,Gt,Ht,Omega] = Jacobians(x_nom(:,t),val) ;
+    xf(:,t+1) = xd(:,t+1)+x_nom(:,t+1) ;
 end
 
 
 % Plot all the states
 figure(3)
-sgtitle('States vs. Time, Linearized Approx. Dynamics Simulation')
+sgtitle('States vs. Time, Linearized Approx. Dynamics nomulation')
 subplot(6,1,1)
 plot(tn, xf(1,:))
 xlabel('Time (s)')
