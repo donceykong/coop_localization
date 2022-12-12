@@ -1,6 +1,10 @@
-run Nonlin_Simulation.m
+%% linearized Discreet Simulation 
+
+run Nonlinear_Simulation.m;
+
 % Nonlinear nom w/o perturbations
-[t, x_base] = ode45(@(t,x) NL_ODE(t, x, u, L, w*0), T, x_0) ;
+w = zeros(6,1) ;
+[t, x_base] = ode45(@(t,x) NL_ODE(t, x, u, L, w), T, x_0) ;
 x_nom = x_base' ;   %x_nom = NO NOISE
 [y_nom] = Nonlin_Meas(x_nom,v*0) ;
 

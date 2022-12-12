@@ -18,12 +18,12 @@ vg_nom = 2 ;
 wa_nom = pi/25 ;
 val = [va_nom vg_nom L phi_g_nom wa_nom zeta_a_nom zeta_g_nom eta_a_nom eta_g_nom] ;
 
+
 %Data
-data = importdata('cooplocalization_finalproj_KFdata.mat') ;
-data = struct2array(data) ;
-Qtrue = cell2mat(data(1,1)) ;
-Rtrue = cell2mat(data(1,2)) ;
-measLabels = cell2mat(data(1,3:7)) ;
-tvec = cell2mat(data(1,8)) ;
-ydata = cell2mat(data(1,9)) ;
-ydata = [zeros(5,1) ydata(:,2:1001)] ;
+data = importdata('data/cooplocalization_finalproj_KFdata.mat');
+Qtrue = data.Qtrue;
+Rtrue = data.Rtrue;
+measLabels = data.measLabels;
+tvec = data.tvec;
+ydata = data.ydata;
+ydata = [zeros(5,1) ydata(:,2:1001)];
