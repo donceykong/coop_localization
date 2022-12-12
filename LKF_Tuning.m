@@ -1,17 +1,13 @@
 run Simulation.m
 %Set process noise statistics
-qk = randn(5,1001) ;
 P0 = diag([.001 .001 deg2rad(1) .001 .001 deg2rad(1)]) ;
-Q = 10*Qtrue ;
-R = Rtrue ;
+Q = diag([100 500 100 100 100 500]) ;
+R = eye(5) ;
 mu = x_0 ;
-w = zeros(6,1) ;
-w1 = chol(Q,'lower') ;
-v = zeros(5,1) ;
-v1 = chol(R,'lower') ;
+
 
 % Monte Carlo will prove std dis of vals
-[x_true_capt,y_true_capt] = MonteCarlo(mu,P0,perturb_x0,T,u,L,w1,v1) ;
+[x_true_capt,y_true_capt] = MonteCarlo(mu,P0,Q,R,perturb_x0,T,u,L) ;
 
 %NEES Test
 n = 6 ;
@@ -29,7 +25,7 @@ r2_y = chi2inv(1-alpha/2,N*p)./N ;
 %Apply LKF
 %perturb_x0,Q,R,P_p,y_true,y_nom,x_nom,val,x_true
 for k = 1:length(x_true_capt)
-[deltax_p_capt{k}, sigma{k},x_est{k},epsilon_x{k},epsilon_y{k}] = LKF(perturb_x0,Q,R,P0,...
+[deltax_p_capt{k}, sigma{k},x_est{k},epsilon_x{k},epsilon_y{k},innovation,error] = LKF(perturb_x0,Q,R,P0,...
     y_true_capt{k},y_nom,x_nom,val,x_true_capt{k}) ;
 end
 
@@ -104,3 +100,63 @@ yline(r2_y)
 xlabel('Time Step, k (s)')
 ylabel('NIS statistic, \epsilon_y')
 % axis([0 20 -100 5000])
+
+%Plot innovations vs. time
+figure(8)
+sig2_p = 2*sqrt(sigma{30})+x_estimate ;
+sig2_m = -2*sqrt(sigma{30})+x_estimate ;
+
+% plot(tn,innovation,'k')
+% hold on
+% plot(tn,sig2,'r--') ;
+% hold off
+
+
+%Plot State Errors vs. time
+figure(9)
+subplot(6,1,1)
+plot(tn,error(1,:))
+hold on
+plot(tn,sig2_p(1,:),'r--') ;
+plot(tn,sig2_m(1,:),'b--') ;
+
+subplot(6,1,2)
+plot(tn,error(2,:))
+hold on
+plot(tn,sig2_p(2,:),'r--') ;
+plot(tn,sig2_m(2,:),'r--') ;
+
+subplot(6,1,3)
+plot(tn,error(3,:))
+hold on
+plot(tn,sig2_p(3,:),'r--') ;
+plot(tn,sig2_m(3,:),'r--') ;
+
+subplot(6,1,4)
+plot(tn,error(4,:))
+hold on
+plot(tn,sig2_p(4,:),'r--') ;
+plot(tn,sig2_m(4,:),'r--') ;
+
+subplot(6,1,5)
+plot(tn,error(5,:))
+hold on
+plot(tn,sig2_p(5,:),'r--') ;
+plot(tn,sig2_m(5,:),'r--') ;
+
+subplot(6,1,6)
+plot(tn,error(6,:))
+hold on
+plot(tn,sig2_p(6,:),'r--') ;
+plot(tn,sig2_m(6,:),'r--') ;
+
+
+
+%% True State Trajectory
+
+[deltax_p_capt, sigma,x_est,epsilon_x,epsilon_y,innovation,error] = LKF(perturb_x0,Q,R,P0,ydata,y_nom,x_nom,val,x_true_capt{30}) ;
+
+figure(10)
+plot(tn,ydata(1,:),'kx')
+
+
