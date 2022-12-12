@@ -26,70 +26,70 @@ w = zeros(6,1) ;
 % [tn, x_total_ode45] = ode45(@(t,x) NL_ODE(t,x,k), T, X0 + dX0);
 [tn, x_total_ode45] = ode45(@(t,x) NL_ODE(t, x, u, L, w), T, x_0 + perturb_x0);
 
-x = x_total_ode45';
+x_true = x_total_ode45';
 
 % Plot all the states
 figure(1)
 sgtitle('States vs. Time, Full Nonlinear Dynamics Simulation')
 subplot(6,1,1)
-plot(tn, x(1,:))
+plot(tn, x_true(1,:))
 xlabel('Time (s)')
 ylabel('\zeta_g (m)')
 
 subplot(6,1,2)
-plot(tn, x(2,:))
+plot(tn, x_true(2,:))
 xlabel('Time (s)')
 ylabel('\eta_g (m)')
 
 subplot(6,1,3)
-plot(tn, wrapToPi(x(3,:)))
+plot(tn, wrapToPi(x_true(3,:)))
 xlabel('Time (s)')
 ylabel('\theta_g (rad)')
 
 subplot(6,1,4)
-plot(tn, x(4,:))
+plot(tn, x_true(4,:))
 xlabel('Time (s)')
 ylabel('\zeta_a (m)')
 
 subplot(6,1,5)
-plot(tn, x(5,:))
+plot(tn, x_true(5,:))
 xlabel('Time (s)')
 ylabel('\eta_a (m)')
 
 subplot(6,1,6)
-plot(tn, wrapToPi(x(6,:)))
+plot(tn, wrapToPi(x_true(6,:)))
 xlabel('Time (s)')
 ylabel('\theta_a (rad)')
 
 
 %% MAKE FUNCTION using x_sim as input
 v = zeros(5,1) ;
-[y_nom] = Nonlin_Meas(x,v) ;
+[y_true] = Nonlin_Meas(x_true,v) ;
 
 % Plot all the measurements
 figure(2)
 sgtitle('Full Nonlinear Model Data Simulation')
 subplot(5,1,1)
-plot (tn, wrapToPi(y_nom(1, :)))
+plot (tn, wrapToPi(y_true(1, :)))
 xlabel('Time (s)')
 ylabel('\gamma_{ag} (rad)')
 
 subplot(5,1,2)
-plot (tn, y_nom(2, :))
+plot (tn, y_true(2, :))
 xlabel('Time (s)')
 ylabel('\rho_{ga} (m)')
 
 subplot(5,1,3)
-plot (tn, wrapToPi(y_nom(3, :)))
+plot (tn, wrapToPi(y_true(3, :)))
 xlabel('Time (s)')
 ylabel('\gamma_{ga} (rad)')
 
 subplot(5,1,4)
-plot (tn, y_nom(4, :))
+plot (tn, y_true(4, :))
 xlabel('Time (s)')
 ylabel('\zeta_a (m)')
 
 subplot(5,1,5)
-plot (tn, y_nom(5, :))
+plot (tn, y_true(5, :))
 xlabel('Time (s)')
 ylabel('\eta_a (m)')
