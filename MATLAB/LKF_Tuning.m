@@ -1,6 +1,7 @@
-run Simulation.m
+run Linearized_DT_Simulation.m
 
 %Set process noise statistics
+rng(42)
 qk = randn(5,1001) ;
 P0 = diag([.001 .001 deg2rad(1) .001 .001 deg2rad(1)]) ;
 Q = 10*Qtrue ;
