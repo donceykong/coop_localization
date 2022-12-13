@@ -6,7 +6,7 @@
 run Project_Parameters.m;
 
 % Initial State Vector
-T = 0:delta_t:100;
+T = 0:dt:100;
 x_0 = [eta_g_nom;
        zeta_g_nom;
        theta_g_nom;
@@ -16,64 +16,80 @@ x_0 = [eta_g_nom;
 
 perturb_x0 = [0; 1; 0; 0; 0; 0.1];
 
-u = [v_g;
-     phi_g;
-     v_a;
-     omega_a];
+u = [vg_nom;
+     phi_g_nom;
+     va_nom;
+     wa_nom];
+w = zeros(6,1) ;
 
 % Get total state vector vs time from NL ODE using ode45
 % [tn, x_total_ode45] = ode45(@(t,x) NL_ODE(t,x,k), T, X0 + dX0);
-[tn, x_total_ode45] = ode45(@(t,x) NL_ODE(t, x, u, L), T, x_0 + perturb_x0);
+[tn, x_total_ode45] = ode45(@(t,x) NL_ODE(t, x, u, L, w), T, x_0 + perturb_x0);
 
-x = x_total_ode45';
+x_true = x_total_ode45';
 
 % Plot all the states
 figure(1)
+sgtitle('States vs. Time, Full Nonlinear Dynamics Simulation')
 subplot(6,1,1)
-plot(tn, x(1,:))
+plot(tn, x_true(1,:))
+xlabel('Time (s)')
+ylabel('\zeta_g (m)')
 
 subplot(6,1,2)
-plot(tn, x(2,:))
+plot(tn, x_true(2,:))
+xlabel('Time (s)')
+ylabel('\eta_g (m)')
 
 subplot(6,1,3)
-plot(tn, wrapToPi(x(3,:)))
+plot(tn, wrapToPi(x_true(3,:)))
+xlabel('Time (s)')
+ylabel('\theta_g (rad)')
 
 subplot(6,1,4)
-plot(tn, x(4,:))
+plot(tn, x_true(4,:))
+xlabel('Time (s)')
+ylabel('\zeta_a (m)')
 
 subplot(6,1,5)
-plot(tn, x(5,:))
+plot(tn, x_true(5,:))
+xlabel('Time (s)')
+ylabel('\eta_a (m)')
 
 subplot(6,1,6)
-plot(tn, wrapToPi(x(6,:)))
+plot(tn, wrapToPi(x_true(6,:)))
+xlabel('Time (s)')
+ylabel('\theta_a (rad)')
 
-% Calculate all Meaurements
-y = zeros(6,1001);
 
-column = 1;
-for time = delta_t:delta_t:100
-    y(1, column) = atan2(x(5, column) - x(2, column), x(4, column) - x(1, column)) - x(3, column);
-    y(2, column) = sqrt((x(1, column) - x(4, column))^2 + (x(2, column) - x(5, column))^2);
-    y(3, column) = atan2(x(2, column) - x(5, column), x(1, column) - x(4, column)) - x(6, column);
-    y(4, column) = x(4, column);
-    y(5, column) = x(5, column);
-
-    column = column + 1;
-end
+%% MAKE FUNCTION using x_sim as input
+v = zeros(5,1) ;
+[y_true] = Nonlin_Meas(x_true,v) ;
 
 % Plot all the measurements
-figure
+figure(2)
+sgtitle('Full Nonlinear Model Data Simulation')
 subplot(5,1,1)
-plot (tn, wrapToPi(y(1, :)))
+plot (tn, wrapToPi(y_true(1, :)))
+xlabel('Time (s)')
+ylabel('\gamma_{ag} (rad)')
 
 subplot(5,1,2)
-plot (tn, y(2, :))
+plot (tn, y_true(2, :))
+xlabel('Time (s)')
+ylabel('\rho_{ga} (m)')
 
 subplot(5,1,3)
-plot (tn, wrapToPi(y(3, :)))
+plot (tn, wrapToPi(y_true(3, :)))
+xlabel('Time (s)')
+ylabel('\gamma_{ga} (rad)')
 
 subplot(5,1,4)
-plot (tn, y(4, :))
+plot (tn, y_true(4, :))
+xlabel('Time (s)')
+ylabel('\zeta_a (m)')
 
 subplot(5,1,5)
-plot (tn, y(5, :))
+plot (tn, y_true(5, :))
+xlabel('Time (s)')
+ylabel('\eta_a (m)')
