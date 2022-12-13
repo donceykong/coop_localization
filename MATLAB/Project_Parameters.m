@@ -1,4 +1,5 @@
 clc, clear all, close all, format compact
+rng(100)
 
 % Parameters & Nominal Values
 L = .5 ;
