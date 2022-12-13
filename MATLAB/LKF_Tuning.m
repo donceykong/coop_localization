@@ -1,4 +1,6 @@
+
 run Simulation.m
+
 %Set process noise statistics
 P0 = diag([.001 .001 deg2rad(1) .001 .001 deg2rad(1)]) ;
 Q = diag([100 500 100 100 100 500]) ;
