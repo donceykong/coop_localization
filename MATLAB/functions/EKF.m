@@ -8,7 +8,7 @@ x_est(:, 1) = x0;
 % [Ft,~,Ht,Omega] = Jacobians(x_true(:,1),val) ;
 for t = 1:1000
     [Ft,~,~,Omega] = Jacobians(x_est(:, t), val) ;
-    [~, x_p] = ode45(@(t,x) NL_ODE(t, x, u, val(3), zeros(6, 1)), [0.1*(t-1) 0.1*t 0.1*(t+1)], x_est(:, t)) ;
+    [~, x_p] = ode45(@(t,x) NL_ODE(t, x, u, val(3), zeros(6, 6)), [0.1*(t-1) 0.1*t 0.1*(t+1)], x_est(:, t)) ;
     x_p;
     size(x_p);
     % NL_ODE(t, x, u, val(3), zeros(6, 1))

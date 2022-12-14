@@ -25,7 +25,7 @@ for t = 1:1000
     deltax_p_capt(:,t+1) = deltax_m ;
     %NEES Test
     e_x = x_true(:,t+1)-x_est(:,t+1) ;
-    error(:,t+1) = e_x ;
+    error(:,t) = e_x ;
     epsilon_x(t+1) = e_x' * ((P_m)^-1) * e_x ;
 
     %NIS Test

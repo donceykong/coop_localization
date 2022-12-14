@@ -16,7 +16,7 @@ x_0 = [eta_g_nom;
 % 
 
 % Nonlinear nom w/o perturbations
-[t, x_base] = ode45(@(t,x) NL_ODE(t, x, u_nom, L, zeros(6, 1)), tvec, x_0) ;
+[t, x_base] = ode45(@(t,x) NL_ODE(t, x, u_nom, L, zeros(6, 6)), tvec, x_0) ;
 x_nom = x_base' ;   %x_nom = NO NOISE
 [y_nom] = Nonlin_Meas(x_nom, zeros(5, 5)) ;
 

@@ -22,11 +22,9 @@ u = [vg_nom;
      phi_g_nom;
      va_nom;
      wa_nom];
-w = zeros(6,1) ;
-
 % Get total state vector vs time from NL ODE using ode45
 % [tn, x_total_ode45] = ode45(@(t,x) NL_ODE(t,x,k), T, X0 + dX0);
-[tn, x_total_ode45] = ode45(@(t,x) NL_ODE(t, x, u, L, w), T, x_0 + perturb_x0);
+[tn, x_total_ode45] = ode45(@(t,x) NL_ODE(t, x, u, L, zeros(6,6)), T, x_0 + perturb_x0);
 
 x_true = x_total_ode45';
 
@@ -38,37 +36,31 @@ subplot(6,1,1)
 plot(tn, x_true(1,:))
 xlabel('Time (s)')
 ylabel('\zeta_g (m)')
-axis([0 100 10 20])
 
 subplot(6,1,2)
 plot(tn, x_true(2,:))
 xlabel('Time (s)')
 ylabel('\eta_g (m)')
-axis([0 100 -5 5])
 
 subplot(6,1,3)
 plot(tn, wrapToPi(x_true(3,:)))
 xlabel('Time (s)')
 ylabel('\theta_g (rad)')
-axis([0 100 -5 5])
 
 subplot(6,1,4)
 plot(tn, x_true(4,:))
 xlabel('Time (s)')
 ylabel('\zeta_a (m)')
-axis([0 100 -200 200])
 
 subplot(6,1,5)
 plot(tn, x_true(5,:))
 xlabel('Time (s)')
 ylabel('\eta_a (m)')
-axis([0 100 -200 200])
 
 subplot(6,1,6)
 plot(tn, wrapToPi(x_true(6,:)))
 xlabel('Time (s)')
 ylabel('\theta_a (rad)')
-axis([0 100 -5 5])
 
 
 %% MAKE FUNCTION using x_sim as input

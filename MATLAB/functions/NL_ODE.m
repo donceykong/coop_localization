@@ -1,6 +1,9 @@
-function dxdt = NL_ODE(~, x, u, L, w)
+function dxdt = NL_ODE(~, x, u, L, Q_sqrt)
 
 dxdt=zeros(6,1); % Initiate size of x_dot to preallocate memory
+
+qw = randn(6,1); 
+w = Q_sqrt * qw;
 
 dxdt(1) = u(1)*cos(x(3))+w(1) ;
 dxdt(2) = u(1)*sin(x(3))+w(2) ;

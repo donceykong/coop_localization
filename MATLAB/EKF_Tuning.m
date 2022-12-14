@@ -7,14 +7,14 @@ rng(100)
 
 load("data/parameters.mat")
 
-Q = diag([0.05 1 0.1 1 1 0.1]) ;
+Q = diag([1 1 0.1 1 1 .01]) ;
 R = eye(5) ;
 mu = x_0 ;
-P0 = diag([1 1 1 1 1 .2]) ;
+P0 = diag([1 1 0.1 1 1 .01]) ;
 
-N = 5;
+N = 20;
 %Simulate multiple ground truth trajectories with process noise
-[x_true_capt,y_true_capt] = MonteCarlo(mu,P0,Qtrue,R,perturb_x0,tvec,u_nom,L, N) ;
+[x_true_capt,y_true_capt] = MonteCarlo(mu,P0,Qtrue,Rtrue,perturb_x0,tvec,u_nom,L, N) ;
 
 %NEES Test
 n = 6 ;
@@ -32,7 +32,7 @@ r2_y = chi2inv(1-alpha/2,N*p)./N ;
 P_p = eye(6) ;
 for k = 1:length(x_true_capt)
     [x_est{k},y_m,e_y,epsilon_x{k},epsilon_y{k},sigma{k},innovation,error] = EKF( ...
-        y_true_capt{k},x_0 + perturb_x0, P0, val, R, Q, u_nom, x_true_capt{k}) ;
+        y_true_capt{k},x_0, P0, val, R, Q, u_nom, x_true_capt{k}) ;
 end
 
 % figure
@@ -73,6 +73,9 @@ tn = tvec;
 %Plot KF Results
 x_est = x_est{N} ;
 x_true = x_true_capt{N} ;
+sig2 = 2*sigma{N};
+T = tvec(2: 1001);
+
 figure(7)
 sgtitle('Extended Kalman Filter Simulation')
 subplot(6,1,1)
@@ -128,7 +131,7 @@ xlabel('Time Step, k (s)')
 ylabel('NEES statistic, \epsilon_x')
 % axis([0 20 -100 5000])
 
-%Plot NEES Test results
+%Plot NIS Test results
 figure(9)
 sgtitle('NIS Estimation Results')
 scatter(tn, E_epsilon_y)
@@ -138,6 +141,44 @@ yline(r2_y)
 xlabel('Time Step, k (s)')
 ylabel('NIS statistic, \epsilon_y')
 % axis([0 20 -100 5000])
+
+%Plot State Errors vs. time
+figure
+subplot(6,1,1)
+plot(T,error(1,:))
+hold on
+plot(T,sig2(1,:),'r--') ;
+plot(T,-sig2(1,:),'r--') ;
+
+subplot(6,1,2)
+plot(T,error(2,:))
+hold on
+plot(T,sig2(2,:),'r--') ;
+plot(T,-sig2(2,:),'r--') ;
+
+subplot(6,1,3)
+plot(T,error(3,:))
+hold on
+plot(T,sig2(3,:),'r--') ;
+plot(T,-sig2(3,:),'r--') ;
+
+subplot(6,1,4)
+plot(T,error(4,:))
+hold on
+plot(T,sig2(4,:),'r--') ;
+plot(T,-sig2(4,:),'r--') ;
+
+subplot(6,1,5)
+plot(T,error(5,:))
+hold on
+plot(T,sig2(5,:),'r--') ;
+plot(T,-sig2(5,:),'r--') ;
+
+subplot(6,1,6)
+plot(T,error(6,:))
+hold on
+plot(T,sig2(6,:),'r--') ;
+plot(T,-sig2(6,:),'r--') ;
 
 %Plot innovations vs. time
 % figure(11)
