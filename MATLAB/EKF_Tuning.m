@@ -8,9 +8,10 @@ rng(100)
 load("data/parameters.mat")
 
 Q = diag([1 1 0.1 1 1 .01]) ;
-R = eye(5) ;
+R = diag([20 20 10 1 10]) * 10;
 mu = x_0 ;
 P0 = diag([1 1 0.1 1 1 .01]) ;
+x0_guess = x_0 + [0;-0.5;-1;0;0;0];
 
 N = 20;
 %Simulate multiple ground truth trajectories with process noise
@@ -18,7 +19,7 @@ N = 20;
 
 %NEES Test
 n = 6 ;
-alpha = .05 ;
+alpha = .01 ;
 r1_x = chi2inv(alpha/2,N*n)./N ;
 r2_x = chi2inv(1-alpha/2,N*n)./N ;
 
@@ -32,7 +33,7 @@ r2_y = chi2inv(1-alpha/2,N*p)./N ;
 P_p = eye(6) ;
 for k = 1:length(x_true_capt)
     [x_est{k},y_m,e_y,epsilon_x{k},epsilon_y{k},sigma{k},innovation,error] = EKF( ...
-        y_true_capt{k},x_0, P0, val, R, Q, u_nom, x_true_capt{k}) ;
+        y_true_capt{k}, x0_guess, P0, val, R, Q, u_nom, x_true_capt{k}) ;
 end
 
 % figure
@@ -73,8 +74,37 @@ tn = tvec;
 %Plot KF Results
 x_est = x_est{N} ;
 x_true = x_true_capt{N} ;
+y_sim = y_true_capt{N};
 sig2 = 2*sigma{N};
 T = tvec(2: 1001);
+
+figure
+sgtitle('EKF Simulated Measurements')
+subplot(5,1,1)
+plot(tn, y_sim(1,:))
+xlabel('time step k')
+ylabel('y_1, rad')
+
+subplot(5,1,2)
+plot(tn, y_sim(2,:))
+xlabel('time step k')
+ylabel('y_2, m')
+
+subplot(5,1,3)
+plot(tn, y_sim(3,:))
+xlabel('time step k')
+ylabel('y_3, rad')
+
+subplot(5,1,4)
+plot(tn, y_sim(4,:))
+xlabel('time step k')
+ylabel('y_4, m')
+
+subplot(5,1,5)
+plot(tn, y_sim(5,:))
+xlabel('time step k')
+ylabel('y_5, m')
+
 
 figure(7)
 sgtitle('Extended Kalman Filter Simulation')

@@ -6,19 +6,19 @@ rng(100)
 run Simulation.m
 
 %Set process noise statistics
-P0 = diag([.1 .1 10 1 1 0.1]);
-Q = diag([10 10 5 10 10 0.01]) ;
-R = eye(5) ;
+P0 = diag([0.1 0.1 1 1 1 0.1]);
+Q = diag([10 10 1 10 10 0.01]) * 50 ;
+R = diag([10 10 10 1 10]) * 1000;
 mu = x_0 ;
-
-N=4;
+x0_guess = perturb_x0 + [2;2;0;0;0;0];
+N=10;
 % Monte Carlo will prove std dis of vals
 [x_true_capt,y_true_capt] = MonteCarlo(mu,P0,Qtrue,Rtrue,perturb_x0,tvec,u_nom,L,N) ;
 
 %NEES Test
 n = 6 ;
 % N = 30 ;
-alpha = .05 ;
+alpha = .01 ;
 r1_x = chi2inv(alpha/2,N*n)./N ;
 r2_x = chi2inv(1-alpha/2,N*n)./N ;
 
@@ -31,7 +31,7 @@ r2_y = chi2inv(1-alpha/2,N*p)./N ;
 %Apply LKF
 %perturb_x0,Q,R,P_p,y_true,y_nom,x_nom,val,x_true
 for k = 1:length(x_true_capt)
-[deltax_p_capt{k}, sigma{k},x_est{k},epsilon_x{k},epsilon_y{k},innovation,error] = LKF(perturb_x0,Q,R,P0,...
+[deltax_p_capt{k}, sigma{k},x_est{k},epsilon_x{k},epsilon_y{k},innovation,error] = LKF(x0_guess,Q,R,P0,...
     y_true_capt{k},y_nom,x_nom,val,x_true_capt{k}) ;
 end
 
@@ -45,6 +45,7 @@ var_epsilon_y = var(cell2mat(epsilon_y')) ;
 
 x_estimate = x_est{N}(:,2:1001) ;
 x_truth = x_true_capt{N}(:,2:1001) ;
+y_sim = y_true_capt{N};
 T = tvec(2:1001);
 %Plot KF Results
 figure(5)
@@ -85,6 +86,33 @@ plot(T, wrapToPi(x_estimate(6,:)))
 hold on
 plot(T, wrapToPi(x_truth(6,:)))
 hold off
+
+figure
+sgtitle('EKF Simulated Measurements')
+subplot(5,1,1)
+plot(tn, y_sim(1,:))
+xlabel('time step k')
+ylabel('y_1, rad')
+
+subplot(5,1,2)
+plot(tn, y_sim(2,:))
+xlabel('time step k')
+ylabel('y_2, m')
+
+subplot(5,1,3)
+plot(tn, y_sim(3,:))
+xlabel('time step k')
+ylabel('y_3, rad')
+
+subplot(5,1,4)
+plot(tn, y_sim(4,:))
+xlabel('time step k')
+ylabel('y_4, m')
+
+subplot(5,1,5)
+plot(tn, y_sim(5,:))
+xlabel('time step k')
+ylabel('y_5, m')
 
 %Plot NEES Test results
 figure(6)
