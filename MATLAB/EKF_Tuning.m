@@ -114,6 +114,8 @@ hold on
 plot(tn,x_true(1,:))
 hold off
 legend('estimated', 'simulated')
+xlabel('time step k')
+ylabel('\xi_g, m')
 
 subplot(6,1,2)
 plot(tn, x_est(2,:))
@@ -121,6 +123,8 @@ hold on
 plot(tn,x_true(2,:))
 hold off
 legend('estimated', 'simulated')
+xlabel('time step k')
+ylabel('\eta_g, m')
 
 subplot(6,1,3)
 plot(tn, wrapToPi(x_est(3,:)))
@@ -128,6 +132,8 @@ hold on
 plot(tn,wrapToPi(x_true(3,:)))
 hold off
 legend('estimated', 'simulated')
+xlabel('time step k')
+ylabel('\theta_g, rad')
 
 subplot(6,1,4)
 plot(tn, x_est(4,:))
@@ -135,6 +141,8 @@ hold on
 plot(tn,x_true(4,:))
 hold off
 legend('estimated', 'simulated')
+xlabel('time step k')
+ylabel('\xi_a, m')
 
 subplot(6,1,5)
 plot(tn, x_est(5,:))
@@ -142,6 +150,8 @@ hold on
 plot(tn,x_true(5,:))
 hold off
 legend('estimated', 'simulated')
+xlabel('time step k')
+ylabel('\eta_a, m')
 
 subplot(6,1,6)
 plot(tn, wrapToPi(x_est(6,:)))
@@ -149,6 +159,8 @@ hold on
 plot(tn,wrapToPi(x_true(6,:)))
 hold off
 legend('estimated', 'simulated')
+xlabel('time step k')
+ylabel('\theta_a, rad')
 
 %Plot NEES Test results
 figure(8)
@@ -179,36 +191,48 @@ plot(T,error(1,:))
 hold on
 plot(T,sig2(1,:),'r--') ;
 plot(T,-sig2(1,:),'r--') ;
+xlabel('time step k')
+ylabel('e_{\xi_g}, m')
 
 subplot(6,1,2)
 plot(T,error(2,:))
 hold on
 plot(T,sig2(2,:),'r--') ;
 plot(T,-sig2(2,:),'r--') ;
+xlabel('time step k')
+ylabel('e_{\eta_g}, m')
 
 subplot(6,1,3)
 plot(T,error(3,:))
 hold on
 plot(T,sig2(3,:),'r--') ;
 plot(T,-sig2(3,:),'r--') ;
+xlabel('time step k')
+ylabel('e_{\theta_g}, rad')
 
 subplot(6,1,4)
 plot(T,error(4,:))
 hold on
 plot(T,sig2(4,:),'r--') ;
 plot(T,-sig2(4,:),'r--') ;
+xlabel('time step k')
+ylabel('e_{\xi_a}, m')
 
 subplot(6,1,5)
 plot(T,error(5,:))
 hold on
 plot(T,sig2(5,:),'r--') ;
 plot(T,-sig2(5,:),'r--') ;
+xlabel('time step k')
+ylabel('e_{\eta_a}, m')
 
 subplot(6,1,6)
 plot(T,error(6,:))
 hold on
 plot(T,sig2(6,:),'r--') ;
 plot(T,-sig2(6,:),'r--') ;
+xlabel('time step k')
+ylabel('e_{\theta_a}, rad')
 
 %Plot innovations vs. time
 % figure(11)

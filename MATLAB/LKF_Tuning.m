@@ -55,37 +55,54 @@ plot(T, x_estimate(1,:))
 hold on
 plot(T, x_truth(1,:))
 hold off
-legend('estimate','truth')
+legend('estimated', 'simulated')
+xlabel('time step k')
+ylabel('\xi_g, m')
 
 subplot(6,1,2)
 plot(T, x_estimate(2,:))
 hold on
 plot(T, x_truth(2,:))
 hold off
+legend('estimated', 'simulated')
+xlabel('time step k')
+ylabel('\eta_g, m')
 
 subplot(6,1,3)
 plot(T, wrapToPi(x_estimate(3,:)))
 hold on
 plot(T, wrapToPi(x_truth(3,:)))
 hold off
+legend('estimated', 'simulated')
+xlabel('time step k')
+ylabel('\theta_g, rad')
 
 subplot(6,1,4)
 plot(T, x_estimate(4,:))
 hold on
 plot(T, x_truth(4,:))
 hold off
+legend('estimated', 'simulated')
+xlabel('time step k')
+ylabel('\xi_a, m')
 
 subplot(6,1,5)
 plot(T, x_estimate(5,:))
 hold on
 plot(T, x_truth(5,:))
 hold off
+legend('estimated', 'simulated')
+xlabel('time step k')
+ylabel('\eta_a, m')
 
 subplot(6,1,6)
 plot(T, wrapToPi(x_estimate(6,:)))
 hold on
 plot(T, wrapToPi(x_truth(6,:)))
 hold off
+legend('estimated', 'simulated')
+xlabel('time step k')
+ylabel('\theta_a, rad')
 
 figure
 sgtitle('EKF Simulated Measurements')
@@ -153,36 +170,48 @@ plot(T,error(1,:))
 hold on
 plot(T,sig2(1,:),'r--') ;
 plot(T,-sig2(1,:),'r--') ;
+xlabel('time step k')
+ylabel('e_{\xi_g}, m')
 
 subplot(6,1,2)
 plot(T,error(2,:))
 hold on
 plot(T,sig2(2,:),'r--') ;
 plot(T,-sig2(2,:),'r--') ;
+xlabel('time step k')
+ylabel('e_{\eta_g}, m')
 
 subplot(6,1,3)
 plot(T,error(3,:))
 hold on
 plot(T,sig2(3,:),'r--') ;
 plot(T,-sig2(3,:),'r--') ;
+xlabel('time step k')
+ylabel('e_{\theta_g}, rad')
 
 subplot(6,1,4)
 plot(T,error(4,:))
 hold on
 plot(T,sig2(4,:),'r--') ;
 plot(T,-sig2(4,:),'r--') ;
+xlabel('time step k')
+ylabel('e_{\xi_a}, m')
 
 subplot(6,1,5)
 plot(T,error(5,:))
 hold on
 plot(T,sig2(5,:),'r--') ;
 plot(T,-sig2(5,:),'r--') ;
+xlabel('time step k')
+ylabel('e_{\eta_a}, m')
 
 subplot(6,1,6)
 plot(T,error(6,:))
 hold on
 plot(T,sig2(6,:),'r--') ;
 plot(T,-sig2(6,:),'r--') ;
+xlabel('time step k')
+ylabel('e_{\theta_a}, rad')
 
 
 
