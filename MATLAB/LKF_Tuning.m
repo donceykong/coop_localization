@@ -1,19 +1,23 @@
+clear
+clc
+close all, format compact
+rng(100)
 
 run Simulation.m
 
 %Set process noise statistics
-P0 = diag([.001 .001 deg2rad(1) .001 .001 deg2rad(1)]) ;
-Q = diag([100 500 100 100 100 500]) ;
+P0 = diag([.1 .1 0.1 1 1 0.1]);
+Q = diag([20 20 20 1 1 1]) ;
 R = eye(5) ;
 mu = x_0 ;
 
-
+N=4;
 % Monte Carlo will prove std dis of vals
-[x_true_capt,y_true_capt] = MonteCarlo(mu,P0,Q,R,perturb_x0,T,u,L) ;
+[x_true_capt,y_true_capt] = MonteCarlo(mu,P0,Qtrue,R,perturb_x0,tvec,u_nom,L,N) ;
 
 %NEES Test
 n = 6 ;
-N = 30 ;
+% N = 30 ;
 alpha = .05 ;
 r1_x = chi2inv(alpha/2,N*n)./N ;
 r2_x = chi2inv(1-alpha/2,N*n)./N ;
@@ -39,46 +43,46 @@ var_epsilon_x = var(cell2mat(epsilon_x')) ;
 E_epsilon_y = mean(cell2mat(epsilon_y')) ;
 var_epsilon_y = var(cell2mat(epsilon_y')) ;
 
-x_estimate = x_est{1} ;
-x_truth = x_true_capt{30} ;
+x_estimate = x_est{N} ;
+x_truth = x_true_capt{N} ;
 %Plot KF Results
 figure(5)
 sgtitle('Linear Kalman Filter Simulation')
 subplot(6,1,1)
-plot(T, x_estimate(1,:))
+plot(tvec, x_estimate(1,:))
 hold on
-plot(T, x_truth(1,:))
+plot(tvec, x_truth(1,:))
 hold off
 legend('estimate','truth')
 
 subplot(6,1,2)
-plot(T, x_estimate(2,:))
+plot(tvec, x_estimate(2,:))
 hold on
-plot(T, x_truth(2,:))
+plot(tvec, x_truth(2,:))
 hold off
 
 subplot(6,1,3)
-plot(T, wrapToPi(x_estimate(3,:)))
+plot(tvec, wrapToPi(x_estimate(3,:)))
 hold on
-plot(T, wrapToPi(x_truth(3,:)))
+plot(tvec, wrapToPi(x_truth(3,:)))
 hold off
 
 subplot(6,1,4)
-plot(T, x_estimate(4,:))
+plot(tvec, x_estimate(4,:))
 hold on
-plot(T, x_truth(4,:))
+plot(tvec, x_truth(4,:))
 hold off
 
 subplot(6,1,5)
-plot(T, x_estimate(5,:))
+plot(tvec, x_estimate(5,:))
 hold on
-plot(T, x_truth(5,:))
+plot(tvec, x_truth(5,:))
 hold off
 
 subplot(6,1,6)
-plot(T, wrapToPi(x_estimate(6,:)))
+plot(tvec, wrapToPi(x_estimate(6,:)))
 hold on
-plot(T, wrapToPi(x_truth(6,:)))
+plot(tvec, wrapToPi(x_truth(6,:)))
 hold off
 
 %Plot NEES Test results
@@ -105,8 +109,8 @@ ylabel('NIS statistic, \epsilon_y')
 
 %Plot innovations vs. time
 figure(8)
-sig2_p = 2*sqrt(sigma{30})+x_estimate ;
-sig2_m = -2*sqrt(sigma{30})+x_estimate ;
+sig2_p = 2*sqrt(sigma{N})+x_estimate ;
+sig2_m = -2*sqrt(sigma{N})+x_estimate ;
 
 % plot(tn,innovation,'k')
 % hold on
@@ -156,9 +160,9 @@ plot(tn,sig2_m(6,:),'r--') ;
 
 %% True State Trajectory
 
-[deltax_p_capt, sigma,x_est,epsilon_x,epsilon_y,innovation,error] = LKF(perturb_x0,Q,R,P0,ydata,y_nom,x_nom,val,x_true_capt{30}) ;
-
-figure(10)
-plot(tn,ydata(1,:),'kx')
+%[deltax_p_capt, sigma,x_est,epsilon_x,epsilon_y,innovation,error] = LKF(perturb_x0,Q,R,P0,ydata,y_nom,x_nom,val,x_true_capt{30}) ;
+% 
+% figure(10)
+% plot(tn,ydata(1,:),'kx')
 
 

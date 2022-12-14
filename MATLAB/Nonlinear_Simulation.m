@@ -1,6 +1,8 @@
 %% Nonlinear System Simulation
 clear
 clc
+close all, format compact
+rng(100)
 
 % Load needed givens (from Project_Parameters.m)
 load("parameters.mat")

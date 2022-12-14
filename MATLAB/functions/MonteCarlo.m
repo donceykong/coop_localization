@@ -1,8 +1,8 @@
-function [x_true_capt,y_true_capt] = MonteCarlo(mu,P0,Q,R,perturb_x0,T,u,L)
+function [x_true_capt,y_true_capt] = MonteCarlo(mu,P0,Q,R,perturb_x0,T,u,L,N)
 %MONTECARLO Summary of this function goes here
 %   Detailed explanation goes here
-Sv = chol(R,'lower')
-for k = 1:30
+Sv = chol(R,'lower');
+for k = 1:N
     xinit = transpose(mvnrnd(mu,P0)) ;
     qw = randn(6,1001) ;
     %  qv = randn(5,1001) ;

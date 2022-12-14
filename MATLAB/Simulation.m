@@ -1,10 +1,22 @@
 %% Linearized DT Simulation
+clear
+clc
+close all, format compact
+rng(100)
 
 % Load needed givens (from Project_Parameters.m)
 load("data/parameters.mat")
 
+x_0 = [eta_g_nom;
+       zeta_g_nom;
+       theta_g_nom;
+       eta_a_nom;
+       zeta_a_nom;
+       theta_a_nom];
+% 
+
 % Nonlinear nom w/o perturbations
-[t, x_base] = ode45(@(t,x) NL_ODE(t, x, u, L, w*0), T, x_0) ;
+[t, x_base] = ode45(@(t,x) NL_ODE(t, x, u_nom, L, zeros(6, 1)), tvec, x_0) ;
 x_nom = x_base' ;   %x_nom = NO NOISE
 [y_nom] = Nonlin_Meas(x_nom, zeros(5, 5)) ;
 
@@ -20,7 +32,7 @@ for t = 1:1000
 end
 
 % If want to plot outputs
-
+tn = tvec;
 % Plot all the states
 figure(3)
 sgtitle('States vs. Time, Linearized Approx. Dynamics nomulation')
