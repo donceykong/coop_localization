@@ -1,9 +1,9 @@
 %% Nonlinear System Simulation
+clear
+clc
 
-% Load needed givens
-% Could save as '.mat' and use load(), but want to continually edit
-% and make sure everything is well commented
-run Project_Parameters.m;
+% Load needed givens (from Project_Parameters.m)
+load("parameters.mat")
 
 % Initial State Vector
 T = 0:dt:100;
@@ -28,6 +28,7 @@ w = zeros(6,1) ;
 
 x_true = x_total_ode45';
 
+%% If want to plot
 % Plot all the states
 figure(1)
 sgtitle('States vs. Time, Full Nonlinear Dynamics Simulation')
