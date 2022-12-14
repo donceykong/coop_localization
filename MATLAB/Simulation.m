@@ -1,4 +1,7 @@
-run Nonlinear_Simulation.m
+%% Linearized DT Simulation
+
+% Load needed givens (from Project_Parameters.m)
+load("data/parameters.mat")
 
 % Nonlinear nom w/o perturbations
 [t, x_base] = ode45(@(t,x) NL_ODE(t, x, u, L, w*0), T, x_0) ;
@@ -16,6 +19,7 @@ for t = 1:1000
     xf(:,t+1) = xd(:,t+1)+x_nom(:,t+1) ;
 end
 
+% If want to plot outputs
 
 % Plot all the states
 figure(3)
