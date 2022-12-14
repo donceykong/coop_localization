@@ -20,7 +20,7 @@ for t = 1:1000
     % deltax_m = Ft*deltax_p ;      
     % P_m = Ft*P_p*Ft'+Omega*Q*Omega' ;
     
-    sigma(:,t+1) = sqrt(diag(P_m)) ;
+    sigma(:,t) = sqrt(diag(P_m)) ;
     x_est(:,t+1) = x_nom(:,t+1) + deltax_m ;
     deltax_p_capt(:,t+1) = deltax_m ;
     %NEES Test
